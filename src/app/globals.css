@@ -1,0 +1,713 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Theme tokens. Each theme defines the shadcn palette (HSL triplets) plus
+  game tokens: board, cells, tiles, radii, three elevation levels, and a
+  page glow. Elevation is deliberate: elev-1 for small surfaces, elev-2 for
+  floating overlays, the board carries its own stronger shadow.
+*/
+@layer base {
+  :root,
+  [data-theme="classic"] {
+    --background: 45 58% 96%;
+    --foreground: 30 12% 38%;
+    --card: 45 55% 98%;
+    --card-foreground: 30 12% 38%;
+    --popover: 45 50% 99%;
+    --popover-foreground: 30 12% 38%;
+    --primary: 29 16% 47%;
+    --primary-foreground: 45 58% 97%;
+    --secondary: 40 32% 90%;
+    --secondary-foreground: 30 12% 36%;
+    --muted: 40 30% 91%;
+    --muted-foreground: 30 8% 42%;
+    --accent: 40 34% 90%;
+    --accent-foreground: 30 12% 33%;
+    --destructive: 6 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 35 20% 86%;
+    --input: 35 20% 86%;
+    --ring: 29 16% 47%;
+    --radius: 0.75rem;
+
+    --board-bg: #bbada0;
+    --board-cell: #cdc1b4;
+    --board-radius: 1rem;
+    --board-shadow: 0 1.5rem 3rem -1rem rgb(119 110 101 / 0.45);
+    --tile-radius: 0.375rem;
+    --radius-dialog: 1rem;
+    --elev-1: 0 1px 2px rgb(119 110 101 / 0.25);
+    --elev-2: 0 12px 32px -12px rgb(119 110 101 / 0.4);
+    --page-glow: radial-gradient(60rem 30rem at 50% -8rem, rgb(187 173 160 / 0.35), transparent 62%);
+    --orb-1: rgb(217 195 174 / 0.45);
+    --orb-2: rgb(242 177 121 / 0.28);
+    --orb-3: rgb(187 173 160 / 0.25);
+
+    color-scheme: light;
+  }
+
+  [data-theme="midnight"] {
+    --background: 240 30% 5%;
+    --foreground: 240 30% 92%;
+    --card: 240 24% 9%;
+    --card-foreground: 240 30% 92%;
+    --popover: 240 25% 10%;
+    --popover-foreground: 240 30% 92%;
+    --primary: 245 85% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 20% 16%;
+    --secondary-foreground: 240 25% 85%;
+    --muted: 240 20% 15%;
+    --muted-foreground: 240 15% 62%;
+    --accent: 240 20% 18%;
+    --accent-foreground: 240 30% 92%;
+    --destructive: 350 80% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 18% 20%;
+    --input: 240 18% 20%;
+    --ring: 245 85% 67%;
+    --radius: 0.875rem;
+
+    --board-bg: #15151f;
+    --board-cell: #1e1e2c;
+    --board-radius: 1.125rem;
+    --board-shadow: 0 1.5rem 3.5rem -1rem rgb(0 0 0 / 0.8), inset 0 0 0 1px rgb(139 92 246 / 0.14);
+    --tile-radius: 0.625rem;
+    --radius-dialog: 1.125rem;
+    --elev-1: 0 4px 14px -6px rgb(0 0 0 / 0.6);
+    --elev-2: 0 20px 48px -16px rgb(0 0 0 / 0.8);
+    --page-glow: radial-gradient(50rem 26rem at 12% -6rem, rgb(99 102 241 / 0.16), transparent 60%),
+      radial-gradient(46rem 24rem at 96% 4rem, rgb(34 211 238 / 0.09), transparent 60%);
+    --orb-1: rgb(124 58 237 / 0.25);
+    --orb-2: rgb(6 182 212 / 0.18);
+    --orb-3: rgb(79 70 229 / 0.15);
+
+    color-scheme: dark;
+  }
+
+  [data-theme="pastel"] {
+    --background: 250 40% 97%;
+    --foreground: 255 12% 40%;
+    --card: 250 45% 99%;
+    --card-foreground: 255 12% 40%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 255 12% 40%;
+    --primary: 255 60% 68%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 250 35% 93%;
+    --secondary-foreground: 255 12% 38%;
+    --muted: 250 35% 93%;
+    --muted-foreground: 255 10% 47%;
+    --accent: 255 45% 93%;
+    --accent-foreground: 255 12% 36%;
+    --destructive: 355 70% 68%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 250 30% 89%;
+    --input: 250 30% 89%;
+    --ring: 255 60% 68%;
+    --radius: 1.125rem;
+
+    --board-bg: #e9e4f4;
+    --board-cell: #f2eefa;
+    --board-radius: 1.5rem;
+    --board-shadow: 0 1.5rem 3rem -1rem rgb(124 116 156 / 0.28);
+    --tile-radius: 0.875rem;
+    --radius-dialog: 1.5rem;
+    --elev-1: 0 2px 8px rgb(124 116 156 / 0.14);
+    --elev-2: 0 18px 40px -14px rgb(124 116 156 / 0.35);
+    --page-glow: radial-gradient(48rem 26rem at 18% -6rem, rgb(203 190 247 / 0.5), transparent 60%),
+      radial-gradient(42rem 24rem at 92% 8rem, rgb(249 200 216 / 0.45), transparent 60%);
+    --orb-1: rgb(203 190 247 / 0.4);
+    --orb-2: rgb(251 217 231 / 0.45);
+    --orb-3: rgb(216 240 207 / 0.35);
+
+    color-scheme: light;
+  }
+
+  [data-theme="mono"] {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 4%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 4%;
+    --primary: 0 0% 4%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 94%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 0 0% 93%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 0% 25%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 0 0% 4%;
+    --radius: 0rem;
+
+    --board-bg: #e5e5e5;
+    --board-cell: #f5f5f5;
+    --board-radius: 0;
+    --board-shadow: 0.45rem 0.45rem 0 0 rgb(10 10 10 / 1), inset 0 0 0 2px rgb(10 10 10 / 1);
+    --tile-radius: 0;
+    --radius-dialog: 0;
+    --elev-1: 0 0 0 1px rgb(10 10 10 / 1);
+    --elev-2: 0.35rem 0.35rem 0 0 rgb(10 10 10 / 1);
+    --page-glow: none;
+    --orb-1: rgb(0 0 0 / 0.04);
+    --orb-2: rgb(0 0 0 / 0.03);
+    --orb-3: rgb(0 0 0 / 0.02);
+
+    color-scheme: light;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 300ms var(--ease-out-soft);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--page-glow);
+    pointer-events: none;
+  }
+
+  button {
+    touch-action: manipulation;
+  }
+
+  /* First-load entrance. Sections rise in with a small stagger. */
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .rise-in {
+    animation: rise-in 450ms var(--ease-out-soft) both;
+  }
+  .rise-in.d-1 {
+    animation-delay: 80ms;
+  }
+  .rise-in.d-2 {
+    animation-delay: 160ms;
+  }
+  .rise-in.d-3 {
+    animation-delay: 240ms;
+  }
+}
+
+@layer components {
+  .kbd {
+    @apply rounded-sm border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] font-semibold text-muted-foreground;
+  }
+}
+
+/*
+  Motion language. Two curves carry the whole app: --ease-out-soft for
+  slides, crossfades and modals; --ease-spring inside the spawn/pop
+  keyframes. Durations: 120ms micro, 150ms board movement, 220-300ms
+  surfaces.
+*/
+:root {
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Dynamic ambient background orbs */
+@keyframes ambient-float-1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(35px, 25px, 0) scale(1.08);
+  }
+}
+
+@keyframes ambient-float-2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-30px, -20px, 0) scale(1.06);
+  }
+}
+
+@keyframes ambient-pulse {
+  0%, 100% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(-50%, -50%, 0) scale(1.12);
+    opacity: 0.55;
+  }
+}
+
+.animate-ambient-1 {
+  animation: ambient-float-1 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-2 {
+  animation: ambient-float-2 26s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-ambient-pulse {
+  animation: ambient-pulse 18s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ambient-1,
+  .animate-ambient-2,
+  .animate-ambient-pulse {
+    animation: none;
+  }
+}
+
+/* Reset continuity: the board dips slightly while the new game swaps in,
+   then the fresh tiles stagger up. */
+.board-holder {
+  transition: opacity 200ms var(--ease-out-soft), transform 200ms var(--ease-out-soft);
+}
+.board-holder-out {
+  opacity: 0;
+  transform: scale(0.985);
+}
+
+.game-board {
+  background: var(--board-bg);
+  border-radius: var(--board-radius);
+  box-shadow: var(--board-shadow);
+  touch-action: none;
+  transition: background-color 300ms var(--ease-out-soft), box-shadow 300ms var(--ease-out-soft),
+    border-radius 300ms var(--ease-out-soft);
+}
+
+.board-cell {
+  background: var(--board-cell);
+  border-radius: var(--tile-radius);
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.08);
+  transition: background-color 300ms var(--ease-out-soft), border-radius 300ms var(--ease-out-soft),
+    box-shadow 300ms var(--ease-out-soft);
+}
+
+/* Background cells remount on a board-size change; a quick fade masks the
+   geometry jump while the tiles animate to their new cells. */
+@keyframes cells-in {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.board-cells-in {
+  animation: cells-in 240ms var(--ease-out-soft) both;
+}
+
+.tile {
+  position: absolute;
+  top: var(--gap);
+  left: var(--gap);
+  width: var(--cell);
+  height: var(--cell);
+  display: grid;
+  place-items: center;
+  border-radius: var(--tile-radius);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  -webkit-user-select: none;
+
+  --tx: calc(var(--col) * (var(--cell) + var(--gap)));
+  --ty: calc(var(--row) * (var(--cell) + var(--gap)));
+  transform: translate(var(--tx), var(--ty));
+  transition: transform 150ms var(--ease-out-soft), width 150ms var(--ease-out-soft),
+    height 150ms var(--ease-out-soft), border-radius 300ms var(--ease-out-soft),
+    background-color 300ms var(--ease-out-soft), color 300ms var(--ease-out-soft),
+    box-shadow 300ms var(--ease-out-soft);
+  will-change: transform;
+}
+
+.tile-ghost {
+  z-index: 0;
+}
+.tile:not(.tile-ghost) {
+  z-index: 1;
+}
+.tile-merge {
+  z-index: 2;
+}
+
+.tile[data-len="1"],
+.tile[data-len="2"] {
+  font-size: calc(var(--cell) * 0.44);
+}
+.tile[data-len="3"] {
+  font-size: calc(var(--cell) * 0.36);
+}
+.tile[data-len="4"] {
+  font-size: calc(var(--cell) * 0.29);
+}
+.tile[data-len="5"] {
+  font-size: calc(var(--cell) * 0.24);
+}
+
+/* Spawn: spring scale-in, slightly delayed so it arrives after the slide. */
+@keyframes tile-spawn {
+  0% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+  62% {
+    transform: translate(var(--tx), var(--ty)) scale(1.07);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(1);
+    opacity: 1;
+  }
+}
+.tile-spawn {
+  animation: tile-spawn 220ms var(--ease-out-soft) 70ms both;
+}
+
+/* Merge: the new tile blooms over the two sliding sources, then pops. */
+@keyframes tile-merge {
+  0% {
+    transform: translate(var(--tx), var(--ty)) scale(0.5);
+    opacity: 0.4;
+  }
+  65% {
+    transform: translate(var(--tx), var(--ty)) scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(1);
+    opacity: 1;
+  }
+}
+@keyframes tile-flash {
+  0% {
+    box-shadow: 0 0 0 0 rgb(255 255 255 / 0);
+  }
+  45% {
+    box-shadow: 0 0 1.5rem 0.35rem rgb(255 255 255 / 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(255 255 255 / 0);
+  }
+}
+.tile-merge {
+  animation: tile-merge 210ms var(--ease-spring) 60ms both, tile-flash 320ms ease-out 60ms both;
+}
+
+/* Undo: tiles restored from a snapshot fade in while surviving tiles
+   transition back to their previous cells. */
+@keyframes tile-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.tile-restored {
+  animation: tile-fade 180ms var(--ease-out-soft) both;
+}
+
+/* Classic tile palette: the original warm ramp. Light tiles carry a deep
+   brown ink and the saturated mid tiles carry white, so every number clears
+   3:1 (WCAG large-text AA). */
+[data-theme="classic"] .tile,
+:root .tile {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), var(--elev-1);
+}
+[data-theme="classic"] .tile-v2,
+:root .tile-v2 {
+  background: #eee4da;
+  color: #776e65;
+}
+[data-theme="classic"] .tile-v4,
+:root .tile-v4 {
+  background: #ede0c8;
+  color: #776e65;
+}
+[data-theme="classic"] .tile-v8,
+:root .tile-v8 {
+  background: #f2b179;
+  color: #6b563d;
+}
+[data-theme="classic"] .tile-v16,
+:root .tile-v16 {
+  background: #f59563;
+  color: #5f3d22;
+}
+[data-theme="classic"] .tile-v32,
+:root .tile-v32 {
+  background: #e05a38;
+  color: #f9f6f2;
+}
+[data-theme="classic"] .tile-v64,
+:root .tile-v64 {
+  background: #ee5330;
+  color: #f9f6f2;
+}
+[data-theme="classic"] .tile-v128,
+:root .tile-v128 {
+  background: #edcf72;
+  color: #6b563d;
+  box-shadow: 0 0 0.6rem rgb(237 207 114 / 0.45);
+}
+[data-theme="classic"] .tile-v256,
+:root .tile-v256 {
+  background: #edcc61;
+  color: #6b563d;
+  box-shadow: 0 0 0.8rem rgb(237 204 97 / 0.5);
+}
+[data-theme="classic"] .tile-v512,
+:root .tile-v512 {
+  background: #edc850;
+  color: #6b563d;
+  box-shadow: 0 0 1rem rgb(237 200 80 / 0.55);
+}
+[data-theme="classic"] .tile-v1024,
+:root .tile-v1024 {
+  background: #edc53f;
+  color: #5f3d22;
+  box-shadow: 0 0 1.2rem rgb(237 197 63 / 0.6);
+}
+[data-theme="classic"] .tile-v2048,
+:root .tile-v2048 {
+  background: #edc22e;
+  color: #5f3d22;
+  box-shadow: 0 0 1.5rem rgb(237 194 46 / 0.65);
+}
+[data-theme="classic"] .tile-vsuper,
+:root .tile-vsuper {
+  background: linear-gradient(135deg, #6b5d4f, #3c3a32);
+  color: #f9f6f2;
+  box-shadow: 0 0 1.4rem rgb(237 194 46 / 0.5);
+}
+
+/* Midnight: near-black board, neon tile ramp, glow strengthens with value. */
+[data-theme="midnight"] .tile {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+[data-theme="midnight"] .tile-v2 {
+  background: #1d1d2b;
+  color: #8e8eae;
+}
+[data-theme="midnight"] .tile-v4 {
+  background: #23233a;
+  color: #a5a5cf;
+}
+[data-theme="midnight"] .tile-v8 {
+  background: #1c3350;
+  color: #7dd3fc;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 0 0.7rem rgb(125 211 252 / 0.25);
+}
+[data-theme="midnight"] .tile-v16 {
+  background: #15455c;
+  color: #22d3ee;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 0 0.8rem rgb(34 211 238 / 0.3);
+}
+[data-theme="midnight"] .tile-v32 {
+  background: #0e7490;
+  color: #a5f3fc;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1), 0 0 0.9rem rgb(34 211 238 / 0.35);
+}
+[data-theme="midnight"] .tile-v64 {
+  background: #0891b2;
+  color: #ecfeff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1), 0 0 1rem rgb(34 211 238 / 0.4);
+}
+[data-theme="midnight"] .tile-v128 {
+  background: #4c1d95;
+  color: #c4b5fd;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1), 0 0 0.8rem rgb(139 92 246 / 0.35);
+}
+[data-theme="midnight"] .tile-v256 {
+  background: #5b21b6;
+  color: #ddd6fe;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1), 0 0 0.9rem rgb(139 92 246 / 0.4);
+}
+[data-theme="midnight"] .tile-v512 {
+  background: #6d28d9;
+  color: #ede9fe;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 0 1.1rem rgb(139 92 246 / 0.45);
+}
+[data-theme="midnight"] .tile-v1024 {
+  background: #7c3aed;
+  color: #f5f3ff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 0 1.3rem rgb(139 92 246 / 0.5);
+}
+[data-theme="midnight"] .tile-v2048 {
+  background: #8b5cf6;
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), 0 0 1.6rem rgb(139 92 246 / 0.55);
+}
+[data-theme="midnight"] .tile-vsuper {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  color: #ffffff;
+  box-shadow: 0 0 1.8rem rgb(124 58 237 / 0.6);
+}
+
+/* Pastel: airy rainbow ramp, soft plum text, gentle tinted shadows. */
+[data-theme="pastel"] .tile {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.45), var(--elev-1);
+}
+[data-theme="pastel"] .tile-v2 {
+  background: #f4f1f9;
+  color: #837ba0;
+}
+[data-theme="pastel"] .tile-v4 {
+  background: #eae4f6;
+  color: #756a9b;
+}
+[data-theme="pastel"] .tile-v8 {
+  background: #fbd9e7;
+  color: #a35c7d;
+}
+[data-theme="pastel"] .tile-v16 {
+  background: #f9c6d6;
+  color: #9c4e73;
+}
+[data-theme="pastel"] .tile-v32 {
+  background: #fdd7c2;
+  color: #ad6440;
+}
+[data-theme="pastel"] .tile-v64 {
+  background: #fbc3a0;
+  color: #a05a30;
+}
+[data-theme="pastel"] .tile-v128 {
+  background: #fdf0bb;
+  color: #94783a;
+}
+[data-theme="pastel"] .tile-v256 {
+  background: #d8f0cf;
+  color: #5f8f60;
+}
+[data-theme="pastel"] .tile-v512 {
+  background: #c2e8d4;
+  color: #4c8470;
+}
+[data-theme="pastel"] .tile-v1024 {
+  background: #bfe4f2;
+  color: #4a7f96;
+}
+[data-theme="pastel"] .tile-v2048 {
+  background: #cbbef7;
+  color: #6653b3;
+  box-shadow: 0 0 1.2rem rgb(203 190 247 / 0.8);
+}
+[data-theme="pastel"] .tile-vsuper {
+  background: linear-gradient(135deg, #cbbef7, #f9c6d6);
+  color: #5d4a9c;
+  box-shadow: 0 0 1.4rem rgb(203 190 247 / 0.9);
+}
+
+/* Mono: brutalist grayscale ramp, sharp edges, hairlines and hard offsets. */
+[data-theme="mono"] .tile {
+  box-shadow: none;
+}
+[data-theme="mono"] .tile-v2 {
+  background: #ffffff;
+  color: #0a0a0a;
+  box-shadow: inset 0 0 0 1px #0a0a0a;
+}
+[data-theme="mono"] .tile-v4 {
+  background: #ececec;
+  color: #0a0a0a;
+  box-shadow: inset 0 0 0 1px #0a0a0a;
+}
+[data-theme="mono"] .tile-v8 {
+  background: #d4d4d4;
+  color: #171717;
+}
+[data-theme="mono"] .tile-v16 {
+  background: #bdbdbd;
+  color: #111111;
+}
+[data-theme="mono"] .tile-v32 {
+  background: #a3a3a3;
+  color: #0a0a0a;
+}
+[data-theme="mono"] .tile-v64 {
+  background: #8a8a8a;
+  color: #0a0a0a;
+}
+[data-theme="mono"] .tile-v128 {
+  background: #6f6f6f;
+  color: #ffffff;
+}
+[data-theme="mono"] .tile-v256 {
+  background: #565656;
+  color: #ffffff;
+}
+[data-theme="mono"] .tile-v512 {
+  background: #404040;
+  color: #ffffff;
+}
+[data-theme="mono"] .tile-v1024 {
+  background: #262626;
+  color: #ffffff;
+}
+[data-theme="mono"] .tile-v2048 {
+  background: #0a0a0a;
+  color: #ffffff;
+  box-shadow: 0 0 0 2px #0a0a0a, 0 0.4rem 1.2rem rgb(10 10 10 / 0.35);
+}
+[data-theme="mono"] .tile-vsuper {
+  background: repeating-linear-gradient(45deg, #0a0a0a 0 6px, #262626 6px 12px);
+  color: #ffffff;
+  box-shadow: 0 0 0 2px #0a0a0a, 0 0.4rem 1.2rem rgb(10 10 10 / 0.35);
+}
+
+/* Reduced motion: tiles fade instead of slide or pop, every other
+   animation collapses to near-instant. Confetti and count-ups are skipped
+   in JS via the same media query. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .tile {
+    transition: opacity 200ms ease !important;
+  }
+  .tile-spawn,
+  .tile-merge,
+  .tile-restored {
+    animation: tile-fade 200ms ease both !important;
+  }
+}
