@@ -27,11 +27,13 @@ interface GameOverModalProps {
 
 function StatChip({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="flex min-w-[4.5rem] flex-col items-center rounded-lg border border-border/70 bg-muted/50 px-3 py-2">
-      <span className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+    <div className="flex min-w-[5rem] flex-col items-center rounded-xl border border-border/70 bg-card/80 px-3 py-2 shadow-sm backdrop-blur-sm">
+      <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground/80">
         {label}
       </span>
-      <span className="text-lg font-bold leading-tight tabular-nums">{value}</span>
+      <span className="mt-0.5 font-display text-lg font-bold leading-tight tabular-nums">
+        {value}
+      </span>
     </div>
   );
 }
@@ -54,44 +56,44 @@ export function GameOverModal({
 
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent className="max-w-sm">
-        <div className="flex flex-col items-center gap-1.5 pt-2 text-center">
-          <div className="mb-2 grid size-12 place-items-center rounded-full bg-accent">
+      <AlertDialogContent className="max-w-sm rounded-2xl border-border/80 bg-card/95 p-6 shadow-elev-2 backdrop-blur-2xl">
+        <div className="flex flex-col items-center gap-1.5 pt-1 text-center">
+          <div className="mb-2 grid size-12 place-items-center rounded-2xl bg-accent text-primary shadow-sm border border-border/60">
             <Icon className="size-6 text-primary" aria-hidden="true" />
           </div>
-          <AlertDialogTitle className="text-xl">
-            {isWin ? `You made ${WIN_VALUE}!` : "Game over"}
+          <AlertDialogTitle className="font-display text-2xl font-bold tracking-tight">
+            {isWin ? `You reached ${WIN_VALUE}!` : "Game Over"}
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-balance">
+          <AlertDialogDescription className="text-balance text-sm text-muted-foreground">
             {isWin
-              ? `Reached ${WIN_VALUE}. Keep going for a higher score, or start a fresh board.`
-              : `No moves left on the ${size}×${size} board.`}
+              ? `Congratulations! Continue pushing for a record score or start a fresh run.`
+              : `No moves left on the ${size}×${size} grid.`}
           </AlertDialogDescription>
         </div>
 
-        <div className="flex justify-center gap-2">
+        <div className="my-2 flex justify-center gap-2.5">
           <StatChip label="Score" value={fmt.format(score)} />
           <StatChip label="Best" value={fmt.format(best)} />
           <StatChip label="Moves" value={moves} />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 pt-1">
           {isWin ? (
             <>
-              <Button onClick={onKeepPlaying} className="w-full">
+              <Button onClick={onKeepPlaying} className="h-10 w-full font-semibold shadow-elev-1">
                 Keep Playing
               </Button>
-              <Button variant="outline" onClick={onNewGame} className="w-full">
+              <Button variant="outline" onClick={onNewGame} className="h-10 w-full font-semibold">
                 New Game
               </Button>
             </>
           ) : (
-            <Button onClick={onNewGame} className="w-full">
+            <Button onClick={onNewGame} className="h-10 w-full font-semibold shadow-elev-1">
               Try Again
             </Button>
           )}
           {canUndo && (
-            <Button variant="ghost" onClick={onUndo} className="w-full">
+            <Button variant="ghost" onClick={onUndo} className="h-9 w-full gap-2 font-medium text-muted-foreground hover:text-foreground">
               <Undo2 className="size-4" aria-hidden="true" />
               Undo last move
             </Button>

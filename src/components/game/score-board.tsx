@@ -23,24 +23,24 @@ function Stat({
 }) {
   const shown = useCountUp(value);
   return (
-    <div className="relative flex flex-1 flex-col rounded-xl border border-border/70 bg-card/60 px-3.5 py-2.5 shadow-elev-1 backdrop-blur-sm transition-[border-color,background-color] duration-150 sm:px-4 sm:py-3">
+    <div className="glass-panel relative flex flex-1 flex-col items-center justify-center rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 transition-[border-color,background-color,transform] duration-200">
       {float && float.amount > 0 && (
         <span
           key={float.id}
           aria-hidden="true"
-          className="animate-float-up absolute -top-2.5 right-2 rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-semibold tabular-nums text-primary-foreground shadow-elev-1"
+          className="animate-float-up absolute -top-2.5 right-2 sm:right-3 rounded-full bg-primary px-2 py-0.5 text-[10.5px] font-bold tabular-nums text-primary-foreground shadow-elev-1 border border-primary-foreground/20"
         >
           +{fmt.format(float.amount)}
         </span>
       )}
-      <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/80">
         {label}
       </span>
-      <span className="mt-1 flex h-7 items-end leading-none sm:h-9 xl:h-10">
+      <span className="mt-0.5 flex h-7 sm:h-8 items-center justify-center font-display leading-none">
         <span
           className={
-            "text-2xl font-bold leading-none tracking-tight tabular-nums sm:text-3xl xl:text-4xl " +
-            (empty ? "text-muted-foreground/45" : "text-foreground")
+            "text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight tabular-nums transition-colors duration-200 " +
+            (empty ? "text-muted-foreground/40" : "text-foreground")
           }
         >
           {fmt.format(shown)}
@@ -51,8 +51,7 @@ function Stat({
 }
 
 /**
- * Current score, best score, and moves tracked in sleek cards. Values are
- * announced through the live region, so the block is decorative to screen readers.
+ * Precision score, best score, and move counter formatted in a clean horizontal strip.
  */
 export function ScoreBoard({
   score,
@@ -69,7 +68,7 @@ export function ScoreBoard({
   hasBest: boolean;
 }) {
   return (
-    <div className="grid grid-cols-3 gap-2 sm:gap-3 md:flex md:flex-col md:gap-2.5" aria-hidden="true">
+    <div className="grid w-full grid-cols-3 gap-2 sm:gap-3" aria-hidden="true">
       <Stat label="Score" value={score} float={gained} />
       <Stat label="Best" value={best} empty={!hasBest} />
       <Stat label="Moves" value={moves} />

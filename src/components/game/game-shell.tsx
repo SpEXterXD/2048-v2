@@ -127,7 +127,7 @@ export function GameShell() {
   const gameInProgress = game.moves > 0 && !game.over;
 
   // Reset continuity: fade the old board out, swap in the fresh game, and
-  // let the new tiles stagger in. One flow instead of a hard cut.
+  // let the new tiles stagger in.
   const [boardPhase, setBoardPhase] = useState<"live" | "resetting">("live");
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (resetTimer.current) clearTimeout(resetTimer.current); }, []);
@@ -151,7 +151,7 @@ export function GameShell() {
     if (gameInProgress) {
       setConfirm({
         title: "Start a new game?",
-        description: "Your current board and score will be lost.",
+        description: "Your current board and score will be reset.",
         confirmLabel: "New Game",
         onConfirm: () => {
           performReset(game.startNewGame);
@@ -169,7 +169,7 @@ export function GameShell() {
       if (gameInProgress) {
         setConfirm({
           title: `Switch to ${next}×${next}?`,
-          description: "Changing the board size starts a fresh game. Your current progress will be lost.",
+          description: "Changing the board size starts a fresh game. Your current progress will be reset.",
           confirmLabel: `Play ${next}×${next}`,
           onConfirm: () => {
             performReset(() => game.startWithSize(next));
@@ -189,51 +189,52 @@ export function GameShell() {
   return (
     <TooltipProvider delayDuration={250}>
       <AmbientBackground />
-      <main className="relative mx-auto flex min-h-dvh w-full max-w-[54rem] xl:max-w-[68rem] 2xl:max-w-[76rem] flex-col px-4 pb-10 pt-6 sm:px-6 sm:pt-8 md:justify-center">
-        <div className="grid gap-6 md:grid-cols-[16.5rem_minmax(0,28rem)] md:items-start md:gap-x-14 md:gap-y-9 lg:gap-x-20 xl:grid-cols-[20rem_minmax(0,36rem)] xl:gap-x-24">
-          <header className="rise-in flex items-start justify-between gap-3 md:col-span-2">
-            <div className="min-w-0">
-              <h1 className="text-5xl font-extrabold leading-none tracking-tighter xl:text-6xl">
-                2048<span className="text-primary">.</span>
-              </h1>
-              <p className="mt-2 text-sm text-muted-foreground">
-                Join tiles. Reach <span className="font-semibold text-foreground">2048</span>.
-              </p>
-            </div>
-            <div className="flex shrink-0 items-center gap-1.5 pt-1">
-              <ThemeSwitcher theme={theme} onChange={changeTheme} />
-              <SoundToggle enabled={soundOn} onChange={setSoundOn} />
-              <VibrationToggle enabled={vibrationOn} onChange={setVibrationOn} />
-            </div>
-          </header>
+      <main className="relative mx-auto flex min-h-dvh w-full max-w-[34rem] sm:max-w-[36rem] flex-col justify-between px-4 pb-8 pt-6 sm:px-6 sm:pt-8">
+        {/* Top Header & Settings Pill */}
+        <header className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="font-display text-4xl sm:text-5xl font-black leading-none tracking-tighter">
+              2048<span className="text-primary inline-block">.</span>
+            </h1>
+            <p className="mt-1 text-xs sm:text-sm font-medium text-muted-foreground">
+              Join tiles. Reach <span className="font-bold text-foreground">2048</span>.
+            </p>
+          </div>
+          <div className="glass-panel flex shrink-0 items-center gap-1 rounded-xl p-1 shadow-sm">
+            <ThemeSwitcher theme={theme} onChange={changeTheme} />
+            <SoundToggle enabled={soundOn} onChange={setSoundOn} />
+            <VibrationToggle enabled={vibrationOn} onChange={setVibrationOn} />
+          </div>
+        </header>
 
-          <div className="rise-in d-1 md:row-start-2 md:pt-2">
-            <ScoreBoard
-              score={game.score}
-              best={game.best}
-              moves={game.moves}
-              gained={game.gained}
-              hasBest={hasBest}
+        {/* Central Game Arena */}
+        <div className="my-auto flex flex-col gap-4 sm:gap-5 py-4">
+          {/* Precision Score Strip */}
+          <ScoreBoard
+            score={game.score}
+            best={game.best}
+            moves={game.moves}
+            gained={game.gained}
+            hasBest={hasBest}
+          />
+
+          {/* Hero Board */}
+          <div
+            className={
+              "board-holder relative " + (boardPhase === "resetting" ? "board-holder-out" : "")
+            }
+          >
+            <Board
+              size={game.size}
+              tiles={game.tiles}
+              ghosts={game.ghosts}
+              bump={game.bump}
+              onSwipe={move}
             />
           </div>
 
-          <div className="rise-in d-2 flex flex-col gap-5 md:col-start-2 md:row-span-2 md:row-start-2">
-            <div
-              className={
-                "board-holder " + (boardPhase === "resetting" ? "board-holder-out" : "")
-              }
-            >
-              <Board
-                size={game.size}
-                tiles={game.tiles}
-                ghosts={game.ghosts}
-                bump={game.bump}
-                onSwipe={move}
-              />
-            </div>
-          </div>
-
-          <div className="rise-in d-3 flex flex-col gap-4">
+          {/* Floating Action Dock */}
+          <div className="glass-dock flex flex-wrap items-center justify-between gap-2.5 rounded-2xl p-2 sm:p-2.5">
             <Controls
               onNewGame={requestNewGame}
               onUndo={undo}
@@ -241,16 +242,18 @@ export function GameShell() {
               undoCount={game.undoCount}
             />
             <BoardSizeControl size={game.size} onChange={requestSize} />
-            <div className="text-xs leading-5 text-muted-foreground">
-              <p className="hidden sm:block">
-                <Kbd>←</Kbd> <Kbd>↑</Kbd> <Kbd>↓</Kbd> <Kbd>→</Kbd> or <Kbd>WASD</Kbd> to move.
-                <Kbd>Z</Kbd> to undo.
-              </p>
-              <p className="sm:hidden">Swipe the board to move.</p>
-            </div>
           </div>
         </div>
 
+        {/* Footnote Keyboard Hints */}
+        <footer className="flex flex-col items-center justify-center text-center text-xs text-muted-foreground/80">
+          <p className="hidden sm:block">
+            <Kbd>←</Kbd> <Kbd>↑</Kbd> <Kbd>↓</Kbd> <Kbd>→</Kbd> or <Kbd>WASD</Kbd> to move · <Kbd>Z</Kbd> to undo
+          </p>
+          <p className="sm:hidden">Swipe anywhere on the board to slide tiles</p>
+        </footer>
+
+        {/* Modals & Portals */}
         <GameOverModal
           variant={game.overOpen ? "over" : "win"}
           open={game.winOpen || game.overOpen}
