@@ -70,7 +70,10 @@ export function move(
   const grid: Array<Array<Tile | null>> = Array.from({ length: size }, () =>
     Array<Tile | null>(size).fill(null)
   );
-  for (const t of tiles) grid[t.row][t.col] = t;
+  for (const t of tiles) {
+    const { isNew: _i, isMerged: _m, countFrom: _c, spawnIndex: _s, restored: _r, ...clean } = t;
+    grid[t.row][t.col] = clean;
+  }
 
   const out: Array<Array<Tile | null>> = Array.from({ length: size }, () =>
     Array<Tile | null>(size).fill(null)

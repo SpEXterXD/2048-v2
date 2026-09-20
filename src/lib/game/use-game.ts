@@ -15,10 +15,10 @@ import type { BoardSize, Direction, Tile } from "./types";
 
 export const UNDO_LIMIT = 3;
 
-/** Keep in sync with the `.tile` CSS transition duration. */
-const SLIDE_MS = 150;
-/** Ghost tiles linger slightly longer than the slide so they never vanish mid-flight. */
-const GHOST_MS = SLIDE_MS + 40;
+/** Keep in sync with the `.tile` CSS transition duration (matching play2048.co). */
+const SLIDE_MS = 100;
+/** Ghost tiles unmount exactly when the slide ends and pop bloom begins. */
+const GHOST_MS = 100;
 
 interface Snapshot {
   tiles: Tile[];

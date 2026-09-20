@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState } from "react";
 import { Check, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { THEMES } from "@/lib/game/themes";
 import type { ThemeId } from "@/lib/game/types";
 import { cn } from "@/lib/utils";
@@ -16,56 +15,26 @@ export function ThemeSwitcher({
   theme: ThemeId;
   onChange: (theme: ThemeId) => void;
 }) {
+  const [open, setOpen] = useState(false);
   const active = THEMES.find((t) => t.id === theme) ?? THEMES[0];
-  const committedRef = useRef<ThemeId>(theme);
-
-  useEffect(() => {
-    committedRef.current = theme;
-  }, [theme]);
-
-  const applyTheme = (id: ThemeId) => {
-    document.documentElement.dataset.theme = id;
-    document.documentElement.style.colorScheme = id === "midnight" ? "dark" : "light";
-    const pageColor = THEMES.find((t) => t.id === id)?.pageColor;
-    if (pageColor) {
-      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", pageColor);
-    }
-  };
-
-  const preview = (id: ThemeId | null) => {
-    if (typeof window !== "undefined" && !window.matchMedia("(hover: hover)").matches) {
-      return;
-    }
-    applyTheme(id ?? committedRef.current);
-  };
 
   const selectTheme = (id: ThemeId) => {
-    committedRef.current = id;
-    applyTheme(id);
     onChange(id);
+    setOpen(false);
   };
 
   return (
-    <Popover
-      onOpenChange={(open) => {
-        if (!open) applyTheme(committedRef.current);
-      }}
-    >
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="size-9 rounded-lg border-border/80 bg-card/60 backdrop-blur-sm shadow-sm hover:bg-accent/80 active:scale-[0.96]"
-              aria-label={`Color theme: ${active.label}. Open to change the theme.`}
-            >
-              <Palette className="size-4" aria-hidden="true" />
-            </Button>
-          </PopoverTrigger>
-        </TooltipTrigger>
-        <TooltipContent>Theme</TooltipContent>
-      </Tooltip>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-9 rounded-lg border-border/80 bg-card/60 backdrop-blur-sm shadow-sm hover:bg-accent/80 active:scale-[0.96]"
+          aria-label={`Color theme: ${active.label}. Open to change the theme.`}
+        >
+          <Palette className="size-4" aria-hidden="true" />
+        </Button>
+      </PopoverTrigger>
       <PopoverContent
         align="end"
         sideOffset={8}
@@ -86,10 +55,6 @@ export function ThemeSwitcher({
                 role="radio"
                 aria-checked={selected}
                 onClick={() => selectTheme(t.id)}
-                onPointerEnter={() => preview(t.id)}
-                onPointerLeave={() => preview(null)}
-                onFocus={() => preview(t.id)}
-                onBlur={() => preview(null)}
                 className={cn(
                   "flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left outline-none transition-all duration-150 focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]",
                   selected

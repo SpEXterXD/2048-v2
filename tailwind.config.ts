@@ -58,13 +58,12 @@ const config: Config = {
       },
       keyframes: {
         "float-up": {
-          "0%": { opacity: "0", transform: "translateY(10px) scale(0.85)" },
-          "25%": { opacity: "1", transform: "translateY(2px) scale(1)" },
-          "100%": { opacity: "0", transform: "translateY(-22px) scale(1)" },
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(-36px)" },
         },
       },
       animation: {
-        "float-up": "float-up 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both",
+        "float-up": "float-up 600ms ease-in both",
       },
     },
   },
